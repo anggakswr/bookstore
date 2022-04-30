@@ -1,12 +1,12 @@
 import { IconContext } from "react-icons";
 import { FaSearch } from "react-icons/fa";
 
-const PurpleBox = () => {
+const PurpleHeader = () => {
   return (
-    <header className="w-full box-between bg-purple-900 py-3 px-6">
-      <h1 className="text-center text-xl text-white">B3k3n App</h1>
+    <header className="fixed inset-x-0 top-0 box-between bg-purple-900 py-3 px-6">
+      <h1 className="text-center md:text-xl text-white">B3k3n App</h1>
 
-      <div className="box-center">
+      <div className="hidden md:flex items-center justify-center">
         <div className="relative">
           <div className="absolute left-2 inset-y-0 box-center">
             <IconContext.Provider
@@ -25,8 +25,18 @@ const PurpleBox = () => {
           />
         </div>
       </div>
+
+      <button className="md:hidden">
+        <IconContext.Provider
+          value={{
+            color: "white",
+          }}
+        >
+          <FaSearch />
+        </IconContext.Provider>
+      </button>
     </header>
   );
 };
 
-export default PurpleBox;
+export default PurpleHeader;

@@ -13,8 +13,11 @@ const Categories = () => {
   const [categories, setCategories] = useState<CategoriesType[] | []>([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
+  // GET categories
   useEffect(() => {
     const getCategories = async () => {
+      setError("");
+
       try {
         const res = await axios.get("/fee-assessment-categories");
 
@@ -30,6 +33,7 @@ const Categories = () => {
     getCategories();
   }, []);
 
+  // render category classnames
   const isCategoryActive = (id: number) => {
     const categoryId = searchParams.get("categoryId") || "1";
 
@@ -38,12 +42,13 @@ const Categories = () => {
       : "p-2 rounded-xl border border-gray-200 text-sm";
   };
 
+  // push a search params
   const onCategoryClick = (id: number) => {
     setSearchParams({ categoryId: id.toString() });
   };
 
   return (
-    <section>
+    <section className="mt-20">
       <p className="mt-4 text-center text-gray-500 font-semibold">
         Explore Categories
       </p>

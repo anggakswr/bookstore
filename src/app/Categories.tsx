@@ -53,10 +53,10 @@ const Categories = () => {
         Explore Categories
       </p>
 
-      {/* err msg */}
-      {error && <p className="text-red-500 text-center text-sm">{error}</p>}
-
       <div className="p-4 flex flex-wrap gap-2 justify-center">
+        {/* err msg */}
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+
         {/* skeleton loading */}
         {loading &&
           ["dummycat1", "dummycat2", "dummycat3"].map((cat) => (
@@ -78,6 +78,10 @@ const Categories = () => {
             </button>
           ))}
       </div>
+
+      {!loading && !categories.length ? (
+        <p className="text-gray-500 text-center text-sm">No data</p>
+      ) : null}
     </section>
   );
 };

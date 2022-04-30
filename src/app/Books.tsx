@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import BooksHeader from "./books/Header";
+import Book from "./books/Book";
 
 type BooksType = {
   id: number;
@@ -70,8 +72,6 @@ const Books = ({ keyword }: BooksPropsType) => {
     setSearchParams({ page: number.toString(), size, categoryId });
   };
 
-  const pageTitle = parseInt(page) + 1;
-
   useEffect(() => {
     const newBooks = initialBooks.filter((book) => {
       const includesBookTitle = book.title
@@ -90,24 +90,15 @@ const Books = ({ keyword }: BooksPropsType) => {
 
   return (
     <section className="px-8">
-      <div className="mt-4 box-between">
-        <h1 className="text-gray-500 font-semibold">
-          {parseInt(page) > 0 ? "Page " + pageTitle : "Must read"}
-        </h1>
-
-        <div className="box-equal gap-x-4">
-          <span className="font-semibold text-gray-500">Items per page</span>
-
-          <select className="bg-white p-2" onChange={pageSizeChange}>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-          </select>
-        </div>
-      </div>
+      <BooksHeader
+        page={page}
+        keyword={keyword}
+        pageSizeChange={pageSizeChange}
+      />
 
       {/* err msg */}
       {error && <p className="text-red-500 text-center text-sm">{error}</p>}
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-start mt-4">
         {/* skeleton loading */}
         {loading &&
@@ -123,20 +114,15 @@ const Books = ({ keyword }: BooksPropsType) => {
 
         {/* books */}
         {!loading &&
-          books.map((book) => (
-            <button key={book.id} className="text-left">
-              <div
-                className="p-2 rounded-xl border border-gray-200 text-sm w-full h-60 md:h-96 bg-center bg-cover"
-                style={{ backgroundImage: `url(${book.cover_url})` }}
-              />
-
-              <p className="mt-2 font-semibold text-gray-500">{book.title}</p>
-            </button>
-          ))}
+          books.map((book) => <Book key={"book" + book.id} book={book} />)}
       </div>
 
+      {!loading && !books.length ? (
+        <p className="text-gray-500 text-center text-sm">No data</p>
+      ) : null}
+
       {/* prev & next page btn */}
-      <div className="box-center gap-x-4 mt-4">
+      <div className="box-center gap-x-4 mt-16">
         {!loading && parseInt(page) ? (
           <button className="font-semibold text-purple-900" onClick={prevPage}>
             &laquo; Previous page

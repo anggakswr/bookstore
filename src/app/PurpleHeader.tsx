@@ -14,7 +14,7 @@ const PurpleHeader = ({ updateKeyword }: PurpleHeaderType) => {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 box-between bg-purple-900 py-3 px-6">
+    <header className="fixed z-10 inset-x-0 top-0 box-between bg-purple-900 py-3 px-6">
       <h1 className="text-center md:text-xl text-white">B3k3n App</h1>
 
       <div className="hidden md:flex items-center justify-center">

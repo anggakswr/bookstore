@@ -1,13 +1,19 @@
 import PurpleHeader from "./app/PurpleHeader";
 import Categories from "./app/Categories";
 import Books from "./app/Books";
+import { useState } from "react";
 
 const App = () => {
+  const [keyword, setKeyword] = useState("");
+  const updateKeyword = (keyword: string) => {
+    setKeyword(keyword);
+  };
+
   return (
     <main>
-      <PurpleHeader />
+      <PurpleHeader updateKeyword={updateKeyword} />
       <Categories />
-      <Books />
+      <Books keyword={keyword} />
     </main>
   );
 };

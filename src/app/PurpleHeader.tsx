@@ -1,7 +1,19 @@
+import { useState } from "react";
 import { IconContext } from "react-icons";
 import { FaSearch } from "react-icons/fa";
 
-const PurpleHeader = () => {
+type PurpleHeaderType = {
+  updateKeyword: (keyword: string) => void;
+};
+
+const PurpleHeader = ({ updateKeyword }: PurpleHeaderType) => {
+  const [keyword, setKeyword] = useState("");
+  const search = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      updateKeyword(keyword);
+    }
+  };
+
   return (
     <header className="fixed inset-x-0 top-0 box-between bg-purple-900 py-3 px-6">
       <h1 className="text-center md:text-xl text-white">B3k3n App</h1>
@@ -22,7 +34,11 @@ const PurpleHeader = () => {
             type="text"
             className="rounded-lg focus:outline-none py-2 pl-8 pr-2"
             placeholder="Search Atomic Habits"
+            onKeyDown={search}
+            onChange={(e) => setKeyword(e.target.value)}
           />
+
+          {/* <button type="submit" onClick={(e) => e.preventDefault()} /> */}
         </div>
       </div>
 

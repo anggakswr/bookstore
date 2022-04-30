@@ -6,12 +6,18 @@ type BooksType = {
   id: number;
   title: string;
   cover_url: string;
+  authors: string[];
 };
 
-const Books = () => {
+type BooksPropsType = {
+  keyword: string;
+};
+
+const Books = ({ keyword }: BooksPropsType) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [books, setBooks] = useState<BooksType[] | []>([]);
+  const [initialBooks, setInitialBooks] = useState<BooksType[] | []>([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const page = searchParams.get("page") || "0";
@@ -22,6 +28,8 @@ const Books = () => {
     const getBooks = async () => {
       setError("");
       setLoading(true);
+      setBooks([]);
+      setInitialBooks([]);
 
       try {
         const res = await axios.get("/fee-assessment-books", {
@@ -34,6 +42,7 @@ const Books = () => {
 
         // console.log("get books", res.data);
         setBooks(res.data);
+        setInitialBooks(res.data);
       } catch {
         setError("An error occurred while displaying books");
       }
@@ -62,6 +71,14 @@ const Books = () => {
   };
 
   const pageTitle = parseInt(page) + 1;
+
+  useEffect(() => {
+    const newBooks = initialBooks.filter((book) =>
+      book.title.toLowerCase().includes(keyword.toLowerCase())
+    );
+
+    setBooks(newBooks);
+  }, [keyword, initialBooks]);
 
   return (
     <section className="px-8">

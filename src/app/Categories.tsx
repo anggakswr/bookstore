@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 type CategoriesType = {
   id: number;
@@ -10,11 +11,13 @@ const Categories = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [categories, setCategories] = useState<CategoriesType[] | []>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const getCategories = async () => {
       try {
         const res = await axios.get("/fee-assessment-categories");
+
         // console.log("get cats", res.data);
         setCategories(res.data);
       } catch {
@@ -27,30 +30,49 @@ const Categories = () => {
     getCategories();
   }, []);
 
+  const isCategoryActive = (id: number) => {
+    const categoryId = searchParams.get("categoryId") || "1";
+
+    return id.toString() === categoryId
+      ? "p-2 rounded-xl text-sm bg-purple-900 text-white"
+      : "p-2 rounded-xl border border-gray-200 text-sm";
+  };
+
+  const onCategoryClick = (id: number) => {
+    setSearchParams({ categoryId: id.toString() });
+  };
+
   return (
-    <section className="p-4 flex flex-wrap gap-2 justify-center">
+    <section>
+      <p className="mt-4 text-center text-gray-500 font-semibold">
+        Explore Categories
+      </p>
+
       {/* err msg */}
-      {error && <small className="text-red-500">{error}</small>}
+      {error && <p className="text-red-500 text-center text-sm">{error}</p>}
 
-      {/* skeleton loading */}
-      {loading &&
-        ["dummycat1", "dummycat2", "dummycat3"].map((cat) => (
-          <button
-            key={cat}
-            className="animate-pulse p-2 rounded-xl bg-gray-200 text-sm w-40 h-10"
-          />
-        ))}
+      <div className="p-4 flex flex-wrap gap-2 justify-center">
+        {/* skeleton loading */}
+        {loading &&
+          ["dummycat1", "dummycat2", "dummycat3"].map((cat) => (
+            <button
+              key={cat}
+              className="animate-pulse p-2 rounded-xl bg-gray-200 text-sm w-40 h-10"
+            />
+          ))}
 
-      {/* categories */}
-      {!loading &&
-        categories.map((category) => (
-          <button
-            key={category.id}
-            className="p-2 rounded-xl border border-gray-200 text-sm"
-          >
-            {category.name}
-          </button>
-        ))}
+        {/* categories */}
+        {!loading &&
+          categories.map((category) => (
+            <button
+              key={category.id}
+              className={isCategoryActive(category.id)}
+              onClick={() => onCategoryClick(category.id)}
+            >
+              {category.name}
+            </button>
+          ))}
+      </div>
     </section>
   );
 };

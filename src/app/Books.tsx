@@ -46,13 +46,29 @@ const Books = () => {
 
   const pageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     // console.log(e.target.value);
-    setSearchParams({ size: e.target.value });
+    setSearchParams({ page, size: e.target.value, categoryId });
   };
+
+  const nextPage = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    const number = parseInt(page) + 1;
+    setSearchParams({ page: number.toString(), size, categoryId });
+  };
+
+  const prevPage = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    const number = parseInt(page) - 1;
+    setSearchParams({ page: number.toString(), size, categoryId });
+  };
+
+  const pageTitle = parseInt(page) + 1;
 
   return (
     <section className="px-8">
       <div className="mt-4 box-between">
-        <p className="text-gray-500 font-semibold">Must Read</p>
+        <h1 className="text-gray-500 font-semibold">
+          {parseInt(page) > 0 ? "Page " + pageTitle : "Must read"}
+        </h1>
 
         <div className="box-equal gap-x-4">
           <span className="font-semibold text-gray-500">Items per page</span>
@@ -67,7 +83,6 @@ const Books = () => {
 
       {/* err msg */}
       {error && <p className="text-red-500 text-center text-sm">{error}</p>}
-
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-start mt-4">
         {/* skeleton loading */}
         {loading &&
@@ -93,6 +108,21 @@ const Books = () => {
               <p className="mt-2 font-semibold text-gray-500">{book.title}</p>
             </button>
           ))}
+      </div>
+
+      {/* prev & next page btn */}
+      <div className="box-center gap-x-4 mt-4">
+        {!loading && parseInt(page) ? (
+          <button className="font-semibold text-purple-900" onClick={prevPage}>
+            &laquo; Previous page
+          </button>
+        ) : null}
+
+        {!loading && books.length > 9 ? (
+          <button className="font-semibold text-purple-900" onClick={nextPage}>
+            Next page &raquo;
+          </button>
+        ) : null}
       </div>
     </section>
   );

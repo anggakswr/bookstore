@@ -2,9 +2,15 @@ type BooksHeaderType = {
   page: string;
   keyword: string;
   pageSizeChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  size: string;
 };
 
-const BooksHeader = ({ page, keyword, pageSizeChange }: BooksHeaderType) => {
+const BooksHeader = ({
+  page,
+  keyword,
+  pageSizeChange,
+  size,
+}: BooksHeaderType) => {
   const pageTitle = parseInt(page) + 1;
 
   return (
@@ -22,7 +28,7 @@ const BooksHeader = ({ page, keyword, pageSizeChange }: BooksHeaderType) => {
       <div className="box-equal gap-x-4">
         <span className="font-semibold text-gray-500">Items per page</span>
 
-        <select className="bg-white p-2" onChange={pageSizeChange}>
+        <select className="bg-white p-2" onChange={pageSizeChange} value={size}>
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>

@@ -94,6 +94,7 @@ const Books = ({ keyword }: BooksPropsType) => {
         page={page}
         keyword={keyword}
         pageSizeChange={pageSizeChange}
+        size={size}
       />
 
       {/* err msg */}

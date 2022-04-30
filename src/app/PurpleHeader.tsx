@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IconContext } from "react-icons";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaBookmark } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 type PurpleHeaderType = {
   updateKeyword: (keyword: string) => void;
@@ -15,9 +16,14 @@ const PurpleHeader = ({ updateKeyword }: PurpleHeaderType) => {
 
   return (
     <header className="fixed z-10 inset-x-0 top-0 box-between bg-purple-900 py-3 px-6">
-      <h1 className="text-center md:text-xl text-white">B3k3n App</h1>
+      <Link
+        to="/"
+        className="hidden md:block text-center md:text-xl text-white"
+      >
+        B3k3n App
+      </Link>
 
-      <div className="hidden md:flex items-center justify-center">
+      <div className="box-center gap-x-4">
         <form className="relative">
           <div className="absolute left-2 inset-y-0 box-center">
             <IconContext.Provider
@@ -45,17 +51,17 @@ const PurpleHeader = ({ updateKeyword }: PurpleHeaderType) => {
             }}
           />
         </form>
-      </div>
 
-      <button className="md:hidden">
-        <IconContext.Provider
-          value={{
-            color: "white",
-          }}
-        >
-          <FaSearch />
-        </IconContext.Provider>
-      </button>
+        <Link to="/bookmark" className="w-10 h-10 box-center" title="Bookmark">
+          <IconContext.Provider
+            value={{
+              color: "white",
+            }}
+          >
+            <FaBookmark />
+          </IconContext.Provider>
+        </Link>
+      </div>
     </header>
   );
 };

@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { IconContext } from "react-icons";
-import { FaStar } from "react-icons/fa";
+import { FaBookmark } from "react-icons/fa";
 
-type BookItem = {
+export type BookItem = {
   id: number;
   cover_url: string;
   title: string;
 };
 
-type BookType = {
+type BookPropType = {
   book: BookItem;
+  updateBookmarkPage?: (id: number) => void;
 };
 
-const Book = ({ book }: BookType) => {
+const Book = ({ book, updateBookmarkPage }: BookPropType) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const Book = ({ book }: BookType) => {
     }
   }, [book.id]);
 
-  const bookmark = () => {
+  const toggleBookmark = () => {
     const bookmarksJson = localStorage.getItem("bookmarks");
 
     if (!bookmarksJson) {
@@ -60,6 +61,10 @@ const Book = ({ book }: BookType) => {
 
       localStorage.setItem("bookmarks", JSON.stringify(newBookmarks));
     }
+
+    if (updateBookmarkPage) {
+      updateBookmarkPage(book.id);
+    }
   };
 
   return (
@@ -67,14 +72,14 @@ const Book = ({ book }: BookType) => {
       {/* star icon / bookmark icon */}
       <button
         className="absolute top-0 right-0 rounded-bl-xl bg-white w-8 h-8 box-center"
-        onClick={bookmark}
+        onClick={toggleBookmark}
       >
         <IconContext.Provider
           value={{
-            color: isBookmarked ? "yellow" : "gray",
+            color: isBookmarked ? "red" : "gray",
           }}
         >
-          <FaStar />
+          <FaBookmark />
         </IconContext.Provider>
       </button>
 
@@ -83,7 +88,7 @@ const Book = ({ book }: BookType) => {
         style={{ backgroundImage: `url(${book.cover_url})` }}
       />
 
-      <p className="mt-2 font-semibold text-gray-500">{book.title}</p>
+      <button className="mt-2 font-semibold text-gray-500">{book.title}</button>
     </div>
   );
 };

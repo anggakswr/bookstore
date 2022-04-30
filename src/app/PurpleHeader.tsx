@@ -8,10 +8,9 @@ type PurpleHeaderType = {
 
 const PurpleHeader = ({ updateKeyword }: PurpleHeaderType) => {
   const [keyword, setKeyword] = useState("");
-  const search = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      updateKeyword(keyword);
-    }
+
+  const submit = () => {
+    updateKeyword(keyword);
   };
 
   return (
@@ -19,7 +18,7 @@ const PurpleHeader = ({ updateKeyword }: PurpleHeaderType) => {
       <h1 className="text-center md:text-xl text-white">B3k3n App</h1>
 
       <div className="hidden md:flex items-center justify-center">
-        <div className="relative">
+        <form className="relative">
           <div className="absolute left-2 inset-y-0 box-center">
             <IconContext.Provider
               value={{
@@ -34,12 +33,18 @@ const PurpleHeader = ({ updateKeyword }: PurpleHeaderType) => {
             type="text"
             className="rounded-lg focus:outline-none py-2 pl-8 pr-2"
             placeholder="Search Atomic Habits"
-            onKeyDown={search}
             onChange={(e) => setKeyword(e.target.value)}
           />
 
-          {/* <button type="submit" onClick={(e) => e.preventDefault()} /> */}
-        </div>
+          <button
+            className="hidden"
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              submit();
+            }}
+          />
+        </form>
       </div>
 
       <button className="md:hidden">

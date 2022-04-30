@@ -73,9 +73,17 @@ const Books = ({ keyword }: BooksPropsType) => {
   const pageTitle = parseInt(page) + 1;
 
   useEffect(() => {
-    const newBooks = initialBooks.filter((book) =>
-      book.title.toLowerCase().includes(keyword.toLowerCase())
-    );
+    const newBooks = initialBooks.filter((book) => {
+      const includesBookTitle = book.title
+        .toLowerCase()
+        .includes(keyword.toLowerCase());
+      const bookAuthors = book.authors
+        .map((author) => author.toLowerCase())
+        .join();
+      const includesAuthors = bookAuthors.includes(keyword);
+
+      return includesBookTitle || includesAuthors;
+    });
 
     setBooks(newBooks);
   }, [keyword, initialBooks]);

@@ -1,11 +1,13 @@
-import PurpleBox from "./app/PurpleBox";
+import PurpleHeader from "./app/PurpleHeader";
 import Categories from "./app/Categories";
+import Books from "./app/Books";
 
 const App = () => {
   return (
     <main>
-      <PurpleBox />
+      <PurpleHeader />
       <Categories />
+      <Books />
     </main>
   );
 };

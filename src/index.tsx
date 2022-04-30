@@ -3,12 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-// import axios from "axios";
-
-// const axios = require("axios").default;
-
-// axios.defaults.baseURL =
-//   "https://asia-southeast2-sejutacita-app.cloudfunctions.net";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

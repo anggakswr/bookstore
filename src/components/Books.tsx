@@ -1,8 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import BooksHeader from "./books/Header";
 import Book from "./books/Book";
+import BooksSkeleton from "./books/Skeleton";
+import Pagination from "./books/Pagination";
+import { AppContext } from "../context/AppContextProvider";
 
 type BooksType = {
   id: number;
@@ -11,11 +14,12 @@ type BooksType = {
   authors: string[];
 };
 
-type BooksPropsType = {
-  keyword: string;
-};
+const Books = () => {
+  // global state
+  const appContext = useContext(AppContext);
+  const keyword = appContext.appState.searchKeyword;
 
-const Books = ({ keyword }: BooksPropsType) => {
+  // local state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [books, setBooks] = useState<BooksType[] | []>([]);
@@ -89,7 +93,7 @@ const Books = ({ keyword }: BooksPropsType) => {
   }, [keyword, initialBooks]);
 
   return (
-    <section className="px-8">
+    <section className="px-4 md:px-8">
       <BooksHeader
         page={page}
         keyword={keyword}
@@ -100,18 +104,9 @@ const Books = ({ keyword }: BooksPropsType) => {
       {/* err msg */}
       {error && <p className="text-red-500 text-center text-sm">{error}</p>}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-start mt-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 items-start mt-4">
         {/* skeleton loading */}
-        {loading &&
-          ["dummybook1", "dummybook2", "dummybook3", "dummybook4"].map(
-            (book) => (
-              <div key={book}>
-                <div className="animate-pulse rounded-xl bg-gray-200 w-full h-60 md:h-96" />
-
-                <div className="mt-2 animate-pulse rounded-xl bg-gray-200 w-3/5 h-8" />
-              </div>
-            )
-          )}
+        {loading && <BooksSkeleton />}
 
         {/* books */}
         {!loading &&
@@ -123,19 +118,14 @@ const Books = ({ keyword }: BooksPropsType) => {
       ) : null}
 
       {/* prev & next page btn */}
-      <div className="box-center gap-x-4 mt-16">
-        {!loading && parseInt(page) ? (
-          <button className="font-semibold text-purple-900" onClick={prevPage}>
-            &laquo; Previous page
-          </button>
-        ) : null}
-
-        {!loading && books.length > 9 ? (
-          <button className="font-semibold text-purple-900" onClick={nextPage}>
-            Next page &raquo;
-          </button>
-        ) : null}
-      </div>
+      {!loading && (
+        <Pagination
+          page={page}
+          prevPage={prevPage}
+          nextPage={nextPage}
+          booksLength={books.length}
+        />
+      )}
     </section>
   );
 };

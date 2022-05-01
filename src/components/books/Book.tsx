@@ -71,7 +71,7 @@ const Book = ({ book, updateBookmarkPage }: BookPropType) => {
     <div className="text-left relative">
       {/* star icon / bookmark icon */}
       <button
-        className="absolute top-0 right-0 rounded-bl-xl bg-white w-8 h-8 box-center"
+        className="absolute top-0 right-0 border-t border-r border-gray-200 rounded-bl-xl rounded-tr-xl bg-white w-8 h-8 box-center"
         onClick={toggleBookmark}
       >
         <IconContext.Provider

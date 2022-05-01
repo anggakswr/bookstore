@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { IconContext } from "react-icons";
 import { FaSearch, FaBookmark } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { AppContext } from "../context/AppContextProvider";
 
-type PurpleHeaderType = {
-  updateKeyword: (keyword: string) => void;
-};
+const PurpleHeader = () => {
+  // global state
+  const appContext = useContext(AppContext);
+  const appDispatch = appContext.appDispatch;
 
-const PurpleHeader = ({ updateKeyword }: PurpleHeaderType) => {
+  // local state
   const [keyword, setKeyword] = useState("");
 
   const submit = () => {
-    updateKeyword(keyword);
+    appDispatch({ type: "SET_SEARCH_KEYWORD", payload: keyword });
   };
 
   return (

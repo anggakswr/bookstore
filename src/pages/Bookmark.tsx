@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Book, { BookItem } from "../books/Book";
+import Book, { BookItem } from "../components/books/Book";
 
 const Bookmark = () => {
   const [books, setBooks] = useState<BookItem[]>([]);

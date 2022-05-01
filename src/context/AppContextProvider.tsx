@@ -2,19 +2,30 @@ import { createContext, useReducer } from "react";
 
 type StateType = {
   searchKeyword: string;
+  bookmarkPing: boolean;
 };
 
-type ActionType = {
+type KeywordAction = {
   type: "SET_SEARCH_KEYWORD";
   payload: string;
 };
 
-const initialState = { searchKeyword: "" };
+type BookmarkAction = {
+  type: "SET_BOOKMARK_PING";
+  payload: boolean;
+};
+
+type ActionType = KeywordAction | BookmarkAction;
+
+const initialState = { searchKeyword: "", bookmarkPing: false };
 
 const reducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
     case "SET_SEARCH_KEYWORD":
-      return { searchKeyword: action.payload };
+      return { ...state, searchKeyword: action.payload };
+
+    case "SET_BOOKMARK_PING":
+      return { ...state, bookmarkPing: action.payload };
 
     default:
       return state;
